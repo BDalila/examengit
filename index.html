@@ -1,9 +1,73 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+    <link rel="stylesheet" type="text/css" href="http://w2ui.com/src/w2ui-1.4.min.css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://w2ui.com/src/w2ui-1.4.min.js"></script>
 </head>
 <body>
-	
+    <div id="myGrid" style="height: 450px"></div>
 </body>
+<script>
+//var array = [];
+//recupPersonnes();
+gridPersonne();
+   function gridPersonne(){
+        
+        var data ={"param":"personne"};
+       var personnes;
+     
+
+        $.ajax({
+          url: 'r.php',
+          data: data,
+          success: function(html){
+                    personnes = JSON.parse(html);
+
+                   
+                    console.log(personnes);
+                
+                    for (var i = 0 ; i < personnes.length; i++) {
+                        w2ui['gridperso'].add({ 
+                            recid: personnes[i]["id_personne"], 
+                            nom: ''+personnes[i]["nom_personne"], 
+                            prenom: ''+personnes[i]["prenom_personne"],
+                            adresse: ''+personnes[i]["adresse_personne"]
+                        });
+                    };
+                    
+                   
+                    
+            },
+          error: function(xhr, ajaxOptions, thrownError){
+                    
+                    alert("Rate");
+                    
+            }
+        });
+	
+	 $('#myGrid').w2grid({ 
+        name: 'myGrid', 
+        show: { 
+            toolbar: true,
+            footer: true,
+            toolbarSave: true
+        },
+        columns: [                
+            { field: 'recid', caption: 'ID', size: '50px', sortable: true, resizable: true },
+            { field: 'nom', caption: 'Nom', size: '120px', sortable: true, resizable: true, 
+                editable: { type: 'text' }
+            },
+            { field: 'prenom', caption: 'email', size: '120px', sortable: true, resizable: true, 
+                editable: { type: 'text' }
+            },
+            { field: 'adresse', caption: 'adresse', size: '120px', sortable: true, resizable: true, 
+                editable: { type: 'text' }
+            },
+   
+        ],
+     
+    });
+}
+</script>
 </html>
